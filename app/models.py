@@ -14,10 +14,16 @@ class Model:
     def get_all(cls):
         return cls.query.all()
 
+categories = db.Table('categories',
+    db.Column('sensor_id', db.Integer, db.ForeignKey('sensor.id'), primary_key=True),
+    db.Column('category_id', db.Integer, db.ForeignKey('category.id'), primary_key=True))
+
 class Sensor(db.Model, Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
-    readings = db.relationship('Reading', backref='publisher', lazy='dynamic')
+    readings = db.relationship('Reading', backref='sensor', lazy='dynamic')
+    categories = db.relationship('Category', secondary=categories, lazy='subquery',
+        backref=db.backref('sensors', lazy=True))
 
     def __init__(self, name):
         self.name = name
