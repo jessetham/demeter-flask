@@ -43,6 +43,11 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     def __repr__(self):
         return '<Sensor {}>'.format(self.name)
 
+    def from_dict(self, data):
+        for field in ['name']:
+            if field in data:
+                setattr(self, field, data[field])
+
     def to_dict(self):
         return {
             'id': self.id,
