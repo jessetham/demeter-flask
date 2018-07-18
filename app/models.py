@@ -7,14 +7,6 @@ categories = db.Table('categories',
     db.Column('category_id', db.Integer, db.ForeignKey('category.id'), primary_key=True))
 
 class ModelMixin:
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
     @classmethod
     def get_all(cls):
         return cls.query.all()
@@ -47,9 +39,6 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     readings = db.relationship('Reading', backref='sensor', lazy='dynamic')
     categories = db.relationship('Category', secondary=categories, lazy='subquery',
         backref=db.backref('sensors', lazy=True))
-
-    def __init__(self, name):
-        self.name = name
 
     def __repr__(self):
         return '<Sensor {}>'.format(self.name)
