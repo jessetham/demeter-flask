@@ -61,6 +61,19 @@ class Reading(db.Model, ModelMixin):
     sensor_id = db.Column(db.Integer, db.ForeignKey('sensor.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
+    def from_dict(self, data):
+        for field in ['data']:
+            if field in data:
+                setattr(self, field, data[field])
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'data': self.data,
+            'sensor': self.sensor.to_dict(),
+            'timestamp': self.timestamp
+        }
+
 class Category(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
