@@ -36,6 +36,7 @@ class PaginatedAPIMixin:
 class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
+    last_updated = db.Column(db.DateTime, index=True)
     readings = db.relationship('Reading', backref='sensor', lazy='dynamic')
     categories = db.relationship('Category', secondary=categories, lazy='subquery',
         backref=db.backref('sensors', lazy=True))
