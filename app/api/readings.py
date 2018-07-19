@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import request, jsonify, url_for
 from app import app, db
 from app.api.errors import bad_request
@@ -10,9 +11,11 @@ def create_reading(sensor_id):
         return bad_request('must include data field')
     # Check if a sensor for the given sensor_id exists
     sensor = Sensor.query.get_or_404(sensor_id)
-    reading = Reading(sensor=sensor)
+    reading = Reading(sensor=sensor, timestamp=datetime.utcnow())
     reading.from_dict(data)
     db.session.add(reading)
+    sensor.last_updated = reading.timestamp
+    db.session.add(sensor)
     db.session.commit()
     response = jsonify(reading.to_dict())
     response.status_code = 201

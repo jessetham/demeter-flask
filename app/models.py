@@ -52,7 +52,8 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'lastUpdated': self.last_updated
         }
 
 class Reading(db.Model, ModelMixin):
