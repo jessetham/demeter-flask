@@ -8,6 +8,8 @@ def create_sensor():
     data = request.get_json() or {}
     if 'name' not in data:
         return bad_request('must include name field')
+    if 'categories' not in data:
+        return bad_request('must include categories field')
     if Sensor.query.filter_by(name=data['name']).first():
         return bad_request('please use a different name')
     sensor = Sensor()

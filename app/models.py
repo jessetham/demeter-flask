@@ -44,16 +44,28 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     def __repr__(self):
         return '<Sensor {}>'.format(self.name)
 
+    def add_categories(self, data):
+        if 'categories' in data:
+            for category_s in data['categories']:
+                # If the category exists in the database, append it to the object
+                category_o = Category.query.filter_by(name=category_s).first()
+                if category_o:
+                    self.categories.append(category_o)
+
+    def add_name(self, data):
+        if 'name' in data:
+            self.name = data['name']
+
     def from_dict(self, data):
-        for field in ['name']:
-            if field in data:
-                setattr(self, field, data[field])
+        self.add_name(data)
+        self.add_categories(data)
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
-            'lastUpdated': self.last_updated
+            'lastUpdated': self.last_updated,
+            'categories': [category.to_dict() for category in self.categories]
         }
 
 class Reading(db.Model, ModelMixin):
