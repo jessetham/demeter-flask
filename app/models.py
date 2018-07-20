@@ -49,8 +49,16 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
             for category_s in data['categories']:
                 # If the category exists in the database, append it to the object
                 category_o = Category.query.filter_by(name=category_s).first()
-                if category_o:
+                if category_o and category_o not in self.categories:
                     self.categories.append(category_o)
+
+    def remove_categories(self, data):
+        if 'categories' in data:
+            for category_s in data['categories']:
+                # If the category exists in the database, remove it from the object
+                category_o = Category.query.filter_by(name=category_s).first()
+                if category_o and category_o in self.categories:
+                    self.categories.remove(category_o)
 
     def add_name(self, data):
         if 'name' in data:

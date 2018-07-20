@@ -1,7 +1,7 @@
 from flask import request, jsonify, url_for
 from app import app, db
 from app.api.errors import bad_request
-from app.models import Category
+from app.models import Category, Sensor
 
 @app.route('/api/categories', methods=['POST'])
 def create_category():
@@ -33,3 +33,41 @@ def get_categories():
     data = Category.to_collection_dict(Category.query, page, per_page,
         'get_categories')
     return jsonify(data)
+
+@app.route('/api/sensors/<int:sensor_id>/categories', methods=['GET'])
+def get_categories_of_sensor(sensor_id):
+    sensor = Sensor.query.get_or_404(sensor_id)
+    return jsonify({
+        'items': [category.to_dict() for category in sensor.categories],
+        '_meta': {
+            'total_items': len(sensor.categories)
+        }
+    })
+
+@app.route('/api/sensors/<int:sensor_id>/categories/add', methods=['PATCH'])
+def add_categories_to_sensor(sensor_id):
+    data = request.get_json() or {}
+    if 'categories' not in data:
+        return bad_request('must include categories field')
+    sensor = Sensor.query.get_or_404(sensor_id)
+    sensor.add_categories(data)
+    db.session.add(sensor)
+    db.session.commit()
+    response = jsonify()
+    response.status_code = 204
+    response.headers['Location'] = url_for('get_categories_of_sensor', sensor_id=sensor.id)
+    return response
+
+@app.route('/api/sensors/<int:sensor_id>/categories/remove', methods=['PATCH'])
+def remove_categories_from_sensor(sensor_id):
+    data = request.get_json() or {}
+    if 'categories' not in data:
+        return bad_request('must include categories field')
+    sensor = Sensor.query.get_or_404(sensor_id)
+    sensor.remove_categories(data)
+    db.session.add(sensor)
+    db.session.commit()
+    response = jsonify()
+    response.status_code = 204
+    response.headers['Location'] = url_for('get_categories_of_sensor', sensor_id=sensor.id)
+    return response
