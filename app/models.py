@@ -84,3 +84,15 @@ class Category(db.Model, ModelMixin):
 
     def __repr__(self):
         return '<Category {}>'.format(self.name)
+
+    def from_dict(self, data):
+        for field in ['name', 'units']:
+            if field in data:
+                setattr(self, field, data[field])
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'units': self.units
+        }
