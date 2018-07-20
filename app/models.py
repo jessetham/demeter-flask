@@ -76,7 +76,7 @@ class Reading(db.Model, ModelMixin):
             'timestamp': self.timestamp
         }
 
-class Category(db.Model, ModelMixin):
+class Category(db.Model, ModelMixin, PaginatedAPIMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     units = db.Column(db.String(16), unique=True)

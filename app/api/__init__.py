@@ -1,1 +1,1 @@
-from app.api import sensors, readings
+from app.api import sensors, readings, categories
