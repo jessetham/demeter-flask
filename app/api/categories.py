@@ -1,9 +1,10 @@
 from flask import request, jsonify, url_for
-from app import app, db
+from app import db
+from app.api import bp
 from app.api.errors import bad_request
 from app.models import Category, Sensor
 
-@app.route('/api/categories', methods=['POST'])
+@bp.route('/categories', methods=['POST'])
 def create_category():
     data = request.get_json() or {}
     if 'name' not in data:
@@ -18,23 +19,23 @@ def create_category():
     db.session.commit()
     response = jsonify(category.to_dict())
     response.status_code = 201
-    response.headers['Location'] = url_for('get_category', category_id=category.id)
+    response.headers['Location'] = url_for('api.get_category', category_id=category.id)
     return response
 
-@app.route('/api/categories/<int:category_id>', methods=['GET'])
+@bp.route('/categories/<int:category_id>', methods=['GET'])
 def get_category(category_id):
     data = Category.query.get_or_404(category_id).to_dict()
     return jsonify(data)
 
-@app.route('/api/categories', methods=['GET'])
+@bp.route('/categories', methods=['GET'])
 def get_categories():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 25)
     data = Category.to_collection_dict(Category.query, page, per_page,
-        'get_categories')
+        'api.get_categories')
     return jsonify(data)
 
-@app.route('/api/sensors/<int:sensor_id>/categories', methods=['GET'])
+@bp.route('/sensors/<int:sensor_id>/categories', methods=['GET'])
 def get_categories_of_sensor(sensor_id):
     sensor = Sensor.query.get_or_404(sensor_id)
     return jsonify({
@@ -44,7 +45,7 @@ def get_categories_of_sensor(sensor_id):
         }
     })
 
-@app.route('/api/sensors/<int:sensor_id>/categories/add', methods=['PATCH'])
+@bp.route('/sensors/<int:sensor_id>/categories/add', methods=['PATCH'])
 def add_categories_to_sensor(sensor_id):
     data = request.get_json() or {}
     if 'categories' not in data:
@@ -55,10 +56,10 @@ def add_categories_to_sensor(sensor_id):
     db.session.commit()
     response = jsonify()
     response.status_code = 204
-    response.headers['Location'] = url_for('get_categories_of_sensor', sensor_id=sensor.id)
+    response.headers['Location'] = url_for('api.get_categories_of_sensor', sensor_id=sensor.id)
     return response
 
-@app.route('/api/sensors/<int:sensor_id>/categories/remove', methods=['PATCH'])
+@bp.route('/sensors/<int:sensor_id>/categories/remove', methods=['PATCH'])
 def remove_categories_from_sensor(sensor_id):
     data = request.get_json() or {}
     if 'categories' not in data:
@@ -69,5 +70,5 @@ def remove_categories_from_sensor(sensor_id):
     db.session.commit()
     response = jsonify()
     response.status_code = 204
-    response.headers['Location'] = url_for('get_categories_of_sensor', sensor_id=sensor.id)
+    response.headers['Location'] = url_for('api.get_categories_of_sensor', sensor_id=sensor.id)
     return response
