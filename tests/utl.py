@@ -11,18 +11,10 @@ CATEGORIES = [
 
 def add_categories_to_db(self):
     for category in CATEGORIES:
-        res = self.client.post('/api/categories',
-            json={
-                'name': category['name'],
-                'units': category['units']
-        })
+        res = self.client.post('/api/categories', json=category)
         self.assertEqual(res.status_code, 201, res.get_json())
 
 def add_sensors_to_db(self):
     for sensor in SENSORS:
-        res = self.client.post('/api/sensors',
-            json={
-                'name': sensor['name'],
-                'categories': sensor['categories']
-        })
+        res = self.client.post('/api/sensors', json=sensor)
         self.assertEqual(res.status_code, 201, res.get_json())

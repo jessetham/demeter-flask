@@ -18,17 +18,25 @@ class SensorsAPICase(unittest.TestCase):
 
     def test_create(self):
         utl.add_categories_to_db(self)
+
+        # Test adding a sensor with one missing paramter
+        res = self.client.post('/api/sensors', json={'name': 'failure'})
+        self.assertEqual(res.status_code, 400, res.get_json())
+
+        # Test adding sensors with the correct parameters
         for sensor in utl.SENSORS:
-            res = self.client.post('/api/sensors',
-                json={
-                    'name': sensor['name'],
-                    'categories': sensor['categories']
-            })
+            res = self.client.post('/api/sensors', json=sensor)
             self.assertEqual(res.status_code, 201, res.get_json())
+
+        # Test adding a sensor that's already been added
+        sensor = utl.SENSORS.pop()
+        res = self.client.post('/api/sensors', json=sensor)
+        self.assertEqual(res.status_code, 400, res.get_json())
 
     def test_get_single(self):
         utl.add_categories_to_db(self)
         utl.add_sensors_to_db(self)
+
         # Get a sensor that hasn't been created yet
         res = self.client.get('/api/sensors/42')
         self.assertEqual(res.status_code, 404, res.get_json())
