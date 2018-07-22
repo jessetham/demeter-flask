@@ -1,25 +1,11 @@
-import unittest
-from app import create_app, db
-from config import UnitTestConfig
 from tests import utl
+from tests.api.base import BaseAPICase
 
-class SensorsAPICase(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app(UnitTestConfig)
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        self.client = self.app.test_client()
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
-
+class SensorsAPICase(BaseAPICase):
     def test_create(self):
         utl.add_categories_to_db(self)
 
-        # Test adding a sensor with one missing paramter
+        # Test adding a sensor with one missing parameter
         res = self.client.post('/api/sensors', json={'name': 'failure'})
         self.assertEqual(res.status_code, 400, res.get_json())
 
@@ -37,11 +23,11 @@ class SensorsAPICase(unittest.TestCase):
         utl.add_categories_to_db(self)
         utl.add_sensors_to_db(self)
 
-        # Get a sensor that hasn't been created yet
+        # Test getting a sensor that hasn't been created yet
         res = self.client.get('/api/sensors/42')
         self.assertEqual(res.status_code, 404, res.get_json())
 
-        # Get a sensor that has been created
+        # Test getting a sensor that has been created
         res = self.client.get('/api/sensors/1')
         self.assertEqual(res.status_code, 200, res.get_json())
 
