@@ -19,6 +19,9 @@ class SensorsAPICase(BaseAPICase):
         res = self.client.post('/api/sensors', json=sensor)
         self.assertEqual(res.status_code, 400, res.get_json())
 
+        # Test adding a sensor with a category that doesn't exist in db
+        # TODO: Add test for issue #4 on GitHub before working on it
+
     def test_get_single(self):
         utl.add_categories_to_db(self)
         utl.add_sensors_to_db(self)
