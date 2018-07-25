@@ -2,7 +2,7 @@ from flask import request, jsonify, url_for
 from app import db
 from app.api import bp
 from app.api.errors import bad_request
-from app.models import Sensor
+from app.models import Sensor, Category
 
 @bp.route('/sensors', methods=['POST'])
 def create_sensor():
@@ -11,6 +11,8 @@ def create_sensor():
         return bad_request('must include name field')
     if 'categories' not in data:
         return bad_request('must include categories field')
+    if not Category.are_valid_categories(data['categories']):
+        return bad_request('invalid categor(y)/(ies) in included categories')
     if Sensor.query.filter_by(name=data['name']).first():
         return bad_request('please use a different name')
     sensor = Sensor()
