@@ -1,3 +1,4 @@
+# Global list used for test cases. DON'T mutate them here or anywhere else
 SENSORS = [
     {'name': 'abacus',      'categories': ['noise', 'temperature']},
     {'name': 'bushranger',  'categories': ['temperature', 'humidity']},

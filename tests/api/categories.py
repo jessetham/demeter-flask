@@ -13,7 +13,7 @@ class CategoriesAPICase(BaseAPICase):
             self.assertEqual(res.status_code, 201, res.get_json())
 
         # Test adding a category that's already been added
-        category = utl.CATEGORIES.pop()
+        category = utl.CATEGORIES[-1]
         res = self.client.post('/api/categories', json=category)
         self.assertEqual(res.status_code, 400, res.get_json())
 
