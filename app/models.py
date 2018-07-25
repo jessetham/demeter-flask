@@ -105,6 +105,14 @@ class Category(db.Model, ModelMixin, PaginatedAPIMixin):
     def __repr__(self):
         return '<Category {}>'.format(self.name)
 
+    @staticmethod
+    def are_valid_categories(categories):
+        valid_categories = set([category.name for category in Category.get_all()])
+        for category in categories:
+            if category not in valid_categories:
+                return False
+        return True
+
     def from_dict(self, data):
         for field in ['name', 'units']:
             if field in data:
