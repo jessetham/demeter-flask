@@ -17,10 +17,16 @@ def create_reading(sensor_id):
         return bad_request('invalid category')
     # Check if a sensor for the given sensor_id exists
     sensor = Sensor.query.get_or_404(sensor_id)
-    reading = Reading(sensor=sensor, timestamp=datetime.utcnow())
+    timestamp = datetime.utcnow() if 'timestamp' not in data else data['timestamp']
+
+    reading = Reading(
+        sensor=sensor,
+        category=category,
+        timestamp=timestamp
+    )
     reading.from_dict(data)
     db.session.add(reading)
-    sensor.last_updated = reading.timestamp
+    sensor.last_updated = timestamp
     db.session.add(sensor)
     db.session.commit()
     response = jsonify(reading.to_dict())
