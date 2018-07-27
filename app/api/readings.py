@@ -3,13 +3,18 @@ from flask import request, jsonify, url_for
 from app import db
 from app.api import bp
 from app.api.errors import bad_request
-from app.models import Sensor, Reading
+from app.models import Sensor, Reading, Category
 
 @bp.route('/sensors/<int:sensor_id>/readings', methods=['POST'])
 def create_reading(sensor_id):
     data = request.get_json() or {}
     if 'data' not in data:
         return bad_request('must include data field')
+    if 'category' not in data:
+        return bad_request('must include category field')
+    category = Category.query.filter_by(name=data['category']).first()
+    if not category:
+        return bad_request('invalid category')
     # Check if a sensor for the given sensor_id exists
     sensor = Sensor.query.get_or_404(sensor_id)
     reading = Reading(sensor=sensor, timestamp=datetime.utcnow())
