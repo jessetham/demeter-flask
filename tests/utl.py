@@ -2,12 +2,16 @@
 SENSORS = [
     {'name': 'abacus',      'categories': ['noise', 'temperature']},
     {'name': 'bushranger',  'categories': ['temperature', 'humidity']},
-    {'name': 'camrose',     'categories': ['humidity', 'noise']}
+    {'name': 'camrose',     'categories': ['humidity', 'noise']},
+    {'name': 'demascus',    'categories': ['brightness', 'energy']},
+    {'name': 'evergreen',   'categories': ['humidity', 'temperature', 'noise', 'brightness']},
 ]
 CATEGORIES = [
     {'name': 'temperature', 'units': 'C'},
     {'name': 'humidity',    'units': 'RH'},
-    {'name': 'noise',       'units': 'dB'}
+    {'name': 'noise',       'units': 'dB'},
+    {'name': 'brightness',  'units': 'lx'},
+    {'name': 'energy',      'units': 'J'},
 ]
 
 def add_categories_to_db(self):
