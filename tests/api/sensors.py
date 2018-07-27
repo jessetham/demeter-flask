@@ -10,9 +10,7 @@ class SensorsAPICase(BaseAPICase):
         self.assertEqual(res.status_code, 400, res.get_json())
 
         # Test adding sensors with the correct parameters
-        for sensor in utl.SENSORS:
-            res = self.client.post('/api/sensors', json=sensor)
-            self.assertEqual(res.status_code, 201, res.get_json())
+        utl.add_sensors_to_db(self)
 
         # Test adding a sensor that's already been added
         sensor = utl.SENSORS[-1]
