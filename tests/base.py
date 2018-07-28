@@ -2,11 +2,12 @@ import unittest
 from app import create_app, db
 from config import UnitTestConfig
 
-class BaseModelCase(unittest.TestCase):
+class BaseCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app(UnitTestConfig)
         self.app_context = self.app.app_context()
         self.app_context.push()
+        self.client = self.app.test_client()
         db.create_all()
 
     def tearDown(self):

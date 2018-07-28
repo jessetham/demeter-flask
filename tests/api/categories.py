@@ -1,7 +1,7 @@
 from tests import utl
-from tests.api.base import BaseAPICase
+from tests.base import BaseCase
 
-class CategoriesAPICase(BaseAPICase):
+class CategoriesAPICase(BaseCase):
     def test_create(self):
         # Test adding a category with one missing parameter
         res = self.client.post('/api/categories', json={'name': 'failure'})
