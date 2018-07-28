@@ -55,4 +55,15 @@ class ReadingsAPICase(BaseAPICase):
             self.assertEqual(res.status_code, 200, res.get_json())
 
     def test_get_multiple(self):
-        pass
+        utl.add_categories_to_db(self)
+        utl.add_sensors_to_db(self)
+        utl.add_readings_to_db(self)
+
+        # Test getting readings from a sensor that doesn't exist
+        res = self.client.get('api/sensors/42/readings')
+        self.assertEqual(res.status_code, 404, res.get_json())
+
+        sensor = utl.SENSORS[-1]
+        # Test getting readings from a valid sensor
+        res = self.client.get('api/sensors/{}/readings'.format(sensor['id']))
+        self.assertEqual(res.status_code, 200, res.get_json())
