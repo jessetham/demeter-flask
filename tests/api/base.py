@@ -1,7 +1,6 @@
 import unittest
 from app import create_app, db
 from config import UnitTestConfig
-from tests import utl
 
 class BaseAPICase(unittest.TestCase):
     def setUp(self):
