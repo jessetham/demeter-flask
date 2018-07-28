@@ -1,4 +1,6 @@
 from random import randint
+from app import db
+from app.models import Category
 
 # Global list used for test cases. DON'T mutate them here or anywhere else
 SENSORS = [
@@ -21,9 +23,11 @@ READING_LOWER_LIMIT = 0
 
 def add_categories_to_db(self):
     for category in CATEGORIES:
-        res = self.client.post('/api/categories', json=category)
-        self.assertEqual(res.status_code, 201, res.get_json())
-        category['id'] = res.get_json()['id']
+        c = Category()
+        c.from_dict(category)
+        db.session.add(c)
+        db.session.commit()
+        category['id'] = c.id
 
 def add_sensors_to_db(self):
     for sensor in SENSORS:

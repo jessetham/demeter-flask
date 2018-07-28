@@ -8,7 +8,9 @@ class CategoriesAPICase(BaseCase):
         self.assertEqual(res.status_code, 400, res.get_json())
 
         # Test adding categories with correct parameters
-        utl.add_categories_to_db(self)
+        for category in utl.CATEGORIES:
+            res = self.client.post('/api/categories', json=category)
+            self.assertEqual(res.status_code, 201, res.get_json())
 
         # Test adding a category that's already been added
         category = utl.CATEGORIES[-1]
