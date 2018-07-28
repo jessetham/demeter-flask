@@ -15,6 +15,7 @@ CATEGORIES = [
     {'name': 'brightness',  'units': 'lx'},
     {'name': 'energy',      'units': 'J'},
 ]
+READINGS = []
 READING_UPPER_LIMIT = 100
 READING_LOWER_LIMIT = 0
 
@@ -33,10 +34,15 @@ def add_sensors_to_db(self):
 def add_readings_to_db(self):
     for sensor in SENSORS:
         for category in sensor['categories']:
+            reading = {
+                'data': randint(READING_LOWER_LIMIT, READING_UPPER_LIMIT),
+                'category': category
+            }
             res = self.client.post('/api/sensors/{}/readings'.format(sensor['id']),
-                json={
-                    'data': randint(READING_LOWER_LIMIT, READING_UPPER_LIMIT),
-                    'category': category
-                }
+                json=reading
             )
             self.assertEqual(res.status_code, 201, res.get_json())
+            reading['id'] = res.get_json()['id']
+            reading['sensor'] = res.get_json()['sensor']['id']
+            reading['category'] = res.get_json()['category']['id']
+            READINGS.append(reading)
