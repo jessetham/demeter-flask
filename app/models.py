@@ -93,6 +93,7 @@ class Reading(db.Model, ModelMixin):
             'id': self.id,
             'data': self.data,
             'sensor': self.sensor.to_dict(),
+            'category': self.category.to_dict(),
             'timestamp': self.timestamp
         }
 
