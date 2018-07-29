@@ -1,6 +1,6 @@
 from random import randint
 from app import db
-from app.models import Category, Sensor
+from app.models import Category, Reading, Sensor
 
 # Global list used for test cases. DON'T mutate them here or anywhere else
 SENSORS = [
@@ -37,18 +37,17 @@ def add_sensors_to_db():
         db.session.commit()
         sensor['id'] = s.id
 
-def add_readings_to_db(self):
+def add_readings_to_db():
     for sensor in SENSORS:
         for category in sensor['categories']:
             reading = {
                 'data': randint(READING_LOWER_LIMIT, READING_UPPER_LIMIT),
-                'category': category
+                'category': category,
+                'sensor': sensor['name']
             }
-            res = self.client.post('/api/sensors/{}/readings'.format(sensor['id']),
-                json=reading
-            )
-            self.assertEqual(res.status_code, 201, res.get_json())
-            reading['id'] = res.get_json()['id']
-            reading['sensor'] = res.get_json()['sensor']['id']
-            reading['category'] = res.get_json()['category']['id']
+            r = Reading()
+            r.from_dict(reading)
+            db.session.add(r)
+            db.session.commit()
+            reading['id'] = r.id
             READINGS.append(reading)
