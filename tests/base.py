@@ -1,6 +1,7 @@
 import unittest
 from app import create_app, db
 from config import UnitTestConfig
+from tests import utl
 
 class BaseCase(unittest.TestCase):
     def setUp(self):
@@ -9,6 +10,7 @@ class BaseCase(unittest.TestCase):
         self.app_context.push()
         self.client = self.app.test_client()
         db.create_all()
+        utl.init()
 
     def tearDown(self):
         db.session.remove()

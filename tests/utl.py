@@ -2,24 +2,33 @@ from random import randint
 from app import db
 from app.models import Category, Reading, Sensor
 
-# Global list used for test cases. DON'T mutate them here or anywhere else
-SENSORS = [
-    {'name': 'abacus',      'categories': ['noise', 'temperature']},
-    {'name': 'bushranger',  'categories': ['temperature', 'humidity']},
-    {'name': 'camrose',     'categories': ['humidity', 'noise']},
-    {'name': 'demascus',    'categories': ['brightness', 'energy']},
-    {'name': 'evergreen',   'categories': ['humidity', 'temperature', 'noise', 'brightness']},
-]
-CATEGORIES = [
-    {'name': 'temperature', 'units': 'C'},
-    {'name': 'humidity',    'units': 'RH'},
-    {'name': 'noise',       'units': 'dB'},
-    {'name': 'brightness',  'units': 'lx'},
-    {'name': 'energy',      'units': 'J'},
-]
+# Global list used for test cases
+SENSORS = []
+CATEGORIES = []
 READINGS = []
 READING_UPPER_LIMIT = 100
 READING_LOWER_LIMIT = 0
+
+def init():
+    global SENSORS
+    global CATEGORIES
+    global READINGS
+
+    SENSORS = [
+        {'name': 'abacus',      'categories': ['noise', 'temperature']},
+        {'name': 'bushranger',  'categories': ['temperature', 'humidity']},
+        {'name': 'camrose',     'categories': ['humidity', 'noise']},
+        {'name': 'demascus',    'categories': ['brightness', 'energy']},
+        {'name': 'evergreen',   'categories': ['humidity', 'temperature', 'noise', 'brightness']},
+    ]
+    CATEGORIES = [
+        {'name': 'temperature', 'units': 'C'},
+        {'name': 'humidity',    'units': 'RH'},
+        {'name': 'noise',       'units': 'dB'},
+        {'name': 'brightness',  'units': 'lx'},
+        {'name': 'energy',      'units': 'J'},
+    ]
+    READINGS = []
 
 def add_categories_to_db():
     for category in CATEGORIES:
