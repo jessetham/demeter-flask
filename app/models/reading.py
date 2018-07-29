@@ -5,6 +5,7 @@ from app.models.sensor import Sensor
 from app.models.mixins import ModelMixin
 
 class Reading(db.Model, ModelMixin):
+    __tablename__ = 'reading'
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

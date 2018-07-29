@@ -4,6 +4,7 @@ from app.models.junctions import categories as categories_junction
 from app.models.mixins import ModelMixin, PaginatedAPIMixin
 
 class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
+    __tablename__ = 'sensor'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     last_updated = db.Column(db.DateTime, index=True)

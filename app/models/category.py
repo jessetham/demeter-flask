@@ -2,6 +2,7 @@ from app import db
 from app.models.mixins import ModelMixin, PaginatedAPIMixin
 
 class Category(db.Model, ModelMixin, PaginatedAPIMixin):
+    __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     units = db.Column(db.String(16), unique=True)
