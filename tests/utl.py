@@ -8,11 +8,13 @@ CATEGORIES = []
 READINGS = []
 READING_UPPER_LIMIT = 100
 READING_LOWER_LIMIT = 0
+USERS = []
 
 def init():
     global SENSORS
     global CATEGORIES
     global READINGS
+    global USERS
 
     SENSORS = [
         {'name': 'abacus',      'categories': ['noise', 'temperature']},
@@ -29,6 +31,13 @@ def init():
         {'name': 'energy',      'units': 'J'},
     ]
     READINGS = []
+    USERS = [
+        {'name': 'Jim',     'sensors': ['abacus', 'bushranger', 'demascus']},
+        {'name': 'Pam',     'sensors': ['camrose', 'evergreen', 'bushranger']},
+        {'name': 'Dwight',  'sensors': ['abacus', 'demascus']},
+        {'name': 'Michael', 'sensors': ['abacus', 'camrose']},
+        {'name': 'Creed',   'sensors': ['evergreen', 'demascus']},
+    ]
 
 def add_categories_to_db():
     for category in CATEGORIES:
