@@ -55,7 +55,7 @@ def add_categories_to_sensor(sensor_id):
     if not Category.are_valid_categories(data['categories']):
         return bad_request('invalid categor(y)/(ies) in included categories')
     sensor = Sensor.query.get_or_404(sensor_id)
-    sensor.add_categories(data)
+    sensor.add_categories(data['categories'])
     db.session.add(sensor)
     db.session.commit()
     response = jsonify()
@@ -71,7 +71,7 @@ def remove_categories_from_sensor(sensor_id):
     if not Category.are_valid_categories(data['categories']):
         return bad_request('invalid categor(y)/(ies) in included categories')
     sensor = Sensor.query.get_or_404(sensor_id)
-    sensor.remove_categories(data)
+    sensor.remove_categories(data['categories'])
     db.session.add(sensor)
     db.session.commit()
     response = jsonify()

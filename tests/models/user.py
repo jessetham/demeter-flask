@@ -10,14 +10,14 @@ class UserModelCase(BaseCase):
         u = User()
 
         # Test adding sensors to a user
-        u.add_sensors(user)
+        u.add_sensors(user['sensors'])
         self.assertEqual(
             set([sensor.name for sensor in u.sensors]),
             set(user['sensors']))
         self.assertEqual(len(u.sensors), len(user['sensors']))
 
         # Test removing sensors from a user
-        u.remove_sensors(user)
+        u.remove_sensors(user['sensors'])
         self.assertEqual(len(u.sensors), 0)
 
     def test_from_and_to_dict(self):
