@@ -18,7 +18,7 @@ class CategoriesAPICase(BaseCase):
         self.assertEqual(res.status_code, 400, res.get_json())
 
     def test_get_single(self):
-        utl.add_categories_to_db(self)
+        utl.add_categories_to_db()
 
         # Test getting a category that doesn't exist in the db
         res = self.client.get('/api/categories/42')
@@ -29,7 +29,7 @@ class CategoriesAPICase(BaseCase):
         self.assertEqual(res.status_code, 200, res.get_json())
 
     def test_get_multiple(self):
-        utl.add_categories_to_db(self)
+        utl.add_categories_to_db()
 
         # Test getting multiple categories from the db
         res = self.client.get('/api/categories')

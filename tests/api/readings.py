@@ -3,8 +3,8 @@ from tests.base import BaseCase
 
 class ReadingsAPICase(BaseCase):
     def test_create(self):
-        utl.add_categories_to_db(self)
-        utl.add_sensors_to_db(self)
+        utl.add_categories_to_db()
+        utl.add_sensors_to_db()
 
         # Test adding a reading to a sensor that doesn't exist
         res = self.client.post('api/sensors/42/readings',
@@ -35,8 +35,8 @@ class ReadingsAPICase(BaseCase):
         utl.add_readings_to_db(self)
 
     def test_get_single(self):
-        utl.add_categories_to_db(self)
-        utl.add_sensors_to_db(self)
+        utl.add_categories_to_db()
+        utl.add_sensors_to_db()
         utl.add_readings_to_db(self)
 
         # Test getting a reading from a sensor that doesn't exist
@@ -55,8 +55,8 @@ class ReadingsAPICase(BaseCase):
             self.assertEqual(res.status_code, 200, res.get_json())
 
     def test_get_multiple(self):
-        utl.add_categories_to_db(self)
-        utl.add_sensors_to_db(self)
+        utl.add_categories_to_db()
+        utl.add_sensors_to_db()
         utl.add_readings_to_db(self)
 
         # Test getting readings from a sensor that doesn't exist
