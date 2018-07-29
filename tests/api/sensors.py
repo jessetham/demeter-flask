@@ -1,7 +1,7 @@
 from tests import utl
-from tests.base import BaseCase
+from tests.api.base import BaseAPICase
 
-class SensorsAPICase(BaseCase):
+class SensorsAPICase(BaseAPICase):
     def test_create(self):
         utl.add_categories_to_db()
 

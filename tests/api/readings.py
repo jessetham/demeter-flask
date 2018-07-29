@@ -1,8 +1,8 @@
 from random import randint
 from tests import utl
-from tests.base import BaseCase
+from tests.api.base import BaseAPICase
 
-class ReadingsAPICase(BaseCase):
+class ReadingsAPICase(BaseAPICase):
     def test_create(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
