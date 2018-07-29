@@ -1,12 +1,13 @@
 from app import db
-from app.models.junctions import sensors as sensors_junction
+from app.models.junctions import user_sensor_junction
 from app.models.mixins import ModelMixin
 
 class User(db.Model, ModelMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
-    sensors = db.relationship('Sensor', secondary=sensors_junction, lazy=True,
+    sensors = db.relationship(
+        'Sensor', secondary=user_sensor_junction, lazy=True,
         backref=db.backref('users', lazy=True))
 
     def __repr__(self):

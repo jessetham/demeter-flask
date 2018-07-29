@@ -1,6 +1,6 @@
 from app import db
 from app.models.category import Category
-from app.models.junctions import categories as categories_junction
+from app.models.junctions import sensor_category_junction
 from app.models.mixins import ModelMixin, PaginatedAPIMixin
 
 class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
@@ -9,7 +9,8 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     name = db.Column(db.String(64), index=True, unique=True)
     last_updated = db.Column(db.DateTime, index=True)
     readings = db.relationship('Reading', backref='sensor', lazy='dynamic')
-    categories = db.relationship('Category', secondary=categories_junction, lazy='subquery',
+    categories = db.relationship(
+        'Category', secondary=sensor_category_junction, lazy='subquery',
         backref=db.backref('sensors', lazy=True))
 
     def __repr__(self):
