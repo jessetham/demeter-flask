@@ -1,6 +1,6 @@
 from random import randint
 from app import db
-from app.models import Category, Reading, Sensor
+from app.models import Category, Reading, Sensor, User
 
 # Global list used for test cases
 SENSORS = []
@@ -69,3 +69,11 @@ def add_readings_to_db():
             db.session.commit()
             reading['id'] = r.id
             READINGS.append(reading)
+
+def add_users_to_db():
+    for user in USERS:
+        u = User()
+        u.from_dict(user)
+        db.session.add(u)
+        db.session.commit()
+        user['id'] = u.id
