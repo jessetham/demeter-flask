@@ -1,4 +1,3 @@
-from datetime import datetime
 from app import db
 from app.models.category import Category
 from app.models.sensor import Sensor
@@ -8,7 +7,7 @@ class Reading(db.Model, ModelMixin):
     __tablename__ = 'reading'
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True)
     sensor_id = db.Column(db.Integer, db.ForeignKey('sensor.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
