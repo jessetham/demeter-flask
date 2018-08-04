@@ -12,21 +12,19 @@ class Reading(db.Model, ModelMixin):
     sensor_id = db.Column(db.Integer, db.ForeignKey('sensor.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-    def add_category_to_reading(self, data):
-        if 'category' in data:
-            category = Category.query.filter_by(name=data['category']).first()
-            if category:
-                self.category = category
+    def add_category(self, category_s):
+        category_o = Category.query.filter_by(name=category_s).first()
+        if category_o:
+            self.category = category_o
 
-    def add_sensor_to_reading(self, data):
-        if 'sensor' in data:
-            sensor = Sensor.query.filter_by(name=data['sensor']).first()
-            if sensor:
-                self.sensor = sensor
+    def add_sensor(self, sensor_s):
+        sensor_o = Sensor.query.filter_by(name=sensor_s).first()
+        if sensor_o:
+            self.sensor = sensor_o
 
     def from_dict(self, data):
-        self.add_category_to_reading(data)
-        self.add_sensor_to_reading(data)
+        self.add_category(data['category'])
+        self.add_sensor(data['sensor'])
         for field in ['data', 'timestamp']:
             if field in data:
                 setattr(self, field, data[field])

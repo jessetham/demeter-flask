@@ -12,21 +12,19 @@ def create_reading(sensor_id):
         return bad_request('must include data field')
     if 'category' not in data:
         return bad_request('must include category field')
-    category = Category.query.filter_by(name=data['category']).first()
-    if not category:
+    # Check if the category is a valid category, if not return a bad request
+    if not Category.are_valid_categories([data['category']]):
         return bad_request('invalid category')
-    # Check if a sensor for the given sensor_id exists
+    # Check if a sensor for the given sensor_id exists and add it to the data if it does
     sensor = Sensor.query.get_or_404(sensor_id)
-    timestamp = datetime.utcnow() if 'timestamp' not in data else data['timestamp']
+    data['sensor'] = sensor.name
+    # Add a timestamp to the data if one was provided
+    data['timestamp'] = datetime.utcnow() if 'timestamp' not in data else data['timestamp']
 
-    reading = Reading(
-        sensor=sensor,
-        category=category,
-        timestamp=timestamp
-    )
+    reading = Reading()
     reading.from_dict(data)
     db.session.add(reading)
-    sensor.last_updated = timestamp
+    sensor.last_updated = data['timestamp']
     db.session.add(sensor)
     db.session.commit()
     response = jsonify(reading.to_dict())
