@@ -16,6 +16,14 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
     def __repr__(self):
         return '<Sensor {}>'.format(self.name)
 
+    @staticmethod
+    def are_valid_sensors(sensors):
+        valid_sensors = set([sensor.name for sensor in Sensor.get_all()])
+        for sensor in sensors:
+            if sensor not in valid_sensors:
+                return False
+        return True
+
     def add_categories(self, categories):
         for category_s in categories:
             # If the category exists in the database, append it to the object

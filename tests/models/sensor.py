@@ -3,6 +3,20 @@ from app.models.sensor import Sensor
 from tests.base import BaseCase
 
 class SensorModelCase(BaseCase):
+    def test_are_valid_sensors(self):
+        utl.add_categories_to_db()
+        utl.add_sensors_to_db()
+
+        # Test checking an array with valid sensors
+        sensors = [sensor['name'] for sensor in utl.SENSORS]
+        valid = Sensor.are_valid_sensors(sensors)
+        self.assertEqual(valid, True)
+
+        sensors.append('failure')
+        # Test checking an array with one invalid sensor
+        valid = Sensor.are_valid_sensors(sensors)
+        self.assertEqual(valid, False)
+
     def test_add_and_remove_categories(self):
         utl.add_categories_to_db()
         sensor = utl.SENSORS[-1]
