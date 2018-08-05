@@ -13,6 +13,8 @@ class Category(db.Model, ModelMixin, PaginatedAPIMixin):
 
     @staticmethod
     def are_valid_categories(categories):
+        if not categories:
+            return False
         valid_categories = set([category.name for category in Category.get_all()])
         for category in categories:
             if category not in valid_categories:

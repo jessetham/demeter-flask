@@ -18,6 +18,8 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
 
     @staticmethod
     def are_valid_sensors(sensors):
+        if not sensors:
+            return False
         valid_sensors = set([sensor.name for sensor in Sensor.get_all()])
         for sensor in sensors:
             if sensor not in valid_sensors:

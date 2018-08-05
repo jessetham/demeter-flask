@@ -16,6 +16,10 @@ class CategoryModelCase(BaseCase):
         valid = Category.are_valid_categories(categories)
         self.assertEqual(valid, False)
 
+        # Test checking an empty list
+        valid = Category.are_valid_categories([])
+        self.assertEqual(valid, False)
+
     def test_from_and_to_dict(self):
         category = utl.CATEGORIES[-1]
         c = Category()

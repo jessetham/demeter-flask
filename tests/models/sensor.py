@@ -17,6 +17,10 @@ class SensorModelCase(BaseCase):
         valid = Sensor.are_valid_sensors(sensors)
         self.assertEqual(valid, False)
 
+        # Test checking an empty list
+        valid = Sensor.are_valid_sensors([])
+        self.assertEqual(valid, False)
+
     def test_add_and_remove_categories(self):
         utl.add_categories_to_db()
         sensor = utl.SENSORS[-1]
