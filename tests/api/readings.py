@@ -33,16 +33,15 @@ class ReadingsAPICase(BaseAPICase):
         self.assertEqual(res.status_code, 400, res.get_json())
 
         # Add valid readings
-        for sensor in utl.SENSORS:
-            for category in sensor['categories']:
-                reading = {
-                    'data': randint(utl.READING_LOWER_LIMIT, utl.READING_UPPER_LIMIT),
-                    'category': category
-                }
-                res = self.client.post('/api/sensors/{}/readings'.format(sensor['id']),
-                    json=reading
-                )
-                self.assertEqual(res.status_code, 201, res.get_json())
+        for category in sensor['categories']:
+            reading = {
+                'data': randint(utl.READING_LOWER_LIMIT, utl.READING_UPPER_LIMIT),
+                'category': category
+            }
+            res = self.client.post('/api/sensors/{}/readings'.format(sensor['id']),
+                json=reading
+            )
+            self.assertEqual(res.status_code, 201, res.get_json())
 
     def test_get_single(self):
         utl.add_categories_to_db()
