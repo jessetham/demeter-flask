@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models import Sensor, Reading, Category
+from app.models import Sensor, Reading, Category, User
 from config import Config
 
 app = create_app(Config)
@@ -10,5 +10,6 @@ def make_shell_context():
         'db': db,
         'Sensor': Sensor,
         'Reading': Reading,
-        'Category': Category
+        'Category': Category,
+        'User': User
     }
