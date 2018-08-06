@@ -1,9 +1,9 @@
 from app import db
 from app.models.junctions import user_sensor_junction
-from app.models.mixins import ModelMixin
+from app.models.mixins import ModelMixin, PaginatedAPIMixin
 from app.models.sensor import Sensor
 
-class User(db.Model, ModelMixin):
+class User(db.Model, ModelMixin, PaginatedAPIMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
