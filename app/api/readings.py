@@ -15,11 +15,12 @@ def create_reading(sensor_id):
     # Check if the category is a valid category, if not return a bad request
     if not Category.are_valid_categories([data['category']]):
         return bad_request('invalid category')
+    # Add a timestamp to the data if one was provided
+    if 'timestamp' not in data:
+        data['timestamp'] = datetime.utcnow()
     # Check if a sensor for the given sensor_id exists and add it to the data if it does
     sensor = Sensor.query.get_or_404(sensor_id)
     data['sensor'] = sensor.name
-    # Add a timestamp to the data if one was provided
-    data['timestamp'] = datetime.utcnow() if 'timestamp' not in data else data['timestamp']
 
     reading = Reading()
     reading.from_dict(data)
