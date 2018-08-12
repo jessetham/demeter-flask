@@ -80,3 +80,21 @@ def remove_user_sensors(user_id):
     response.status_code = 204
     response.headers['Location'] = url_for('api.get_user_sensors', user_id=user.id)
     return response
+
+@bp.route('/users/<int:user_id>/password', methods=['PATCH'])
+def change_user_password(user_id):
+    data = request.get_json() or {}
+    if 'old' not in data:
+        return bad_request('must include old password field')
+    if 'new' not in data:
+        return bad_request('must include new password field')
+    user = User.query.get_or_404(user_id)
+    if not user.check_password(data['old']):
+        return bad_request('incorrect old password')
+    user.set_password(data['new'])
+    db.session.add(user)
+    db.session.commit()
+    response = jsonify()
+    response.status_code = 204
+    response.headers['Location'] = url_for('api.get_user', user_id=user.id)
+    return response

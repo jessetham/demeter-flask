@@ -104,3 +104,23 @@ class UsersAPICase(BaseAPICase):
             json={'sensors': ['failure']}
         )
         self.assertEqual(res.status_code, 400)
+
+    def test_change_user_password(self):
+        utl.add_categories_to_db()
+        utl.add_sensors_to_db()
+        utl.add_users_to_db()
+
+        user = utl.USERS[-1]
+        # Test changing the password with an invalid old password
+        res = self.client.patch(
+            '/api/users/{}/password'.format(user['id']),
+            json={'old': 'failure', 'new': 'failure'}
+        )
+        self.assertEqual(res.status_code, 400)
+
+        # Test changing the password with the correct old password
+        res = self.client.patch(
+            '/api/users/{}/password'.format(user['id']),
+            json={'old': user['password'], 'new': 'failure'}
+        )
+        self.assertEqual(res.status_code, 204)
