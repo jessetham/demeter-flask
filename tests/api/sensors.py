@@ -43,7 +43,7 @@ class SensorsAPICase(BaseAPICase):
         res = self.client.get('/api/sensors')
         self.assertEqual(res.status_code, 200, res.get_json())
 
-    def test_get_categories_of_sensor(self):
+    def test_get_sensor_categories(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
 
@@ -55,7 +55,7 @@ class SensorsAPICase(BaseAPICase):
         res = self.client.get('/api/sensors/1/categories')
         self.assertEqual(res.status_code, 200, res.get_json())
 
-    def test_add_categories_to_sensor(self):
+    def test_add_sensor_categories(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
         valid_categories = [category['name'] for category in utl.CATEGORIES]
@@ -77,7 +77,7 @@ class SensorsAPICase(BaseAPICase):
         )
         self.assertEqual(res.status_code, 400)
 
-    def test_remove_categories_from_sensor(self):
+    def test_remove_sensor_categories(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
         valid_categories = [category['name'] for category in utl.CATEGORIES]

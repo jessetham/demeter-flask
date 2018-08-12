@@ -38,7 +38,7 @@ def get_users():
     return jsonify(data)
 
 @bp.route('/users/<int:user_id>/sensors', methods=['GET'])
-def get_sensors_of_user(user_id):
+def get_user_sensors(user_id):
     user = User.query.get_or_404(user_id)
     return jsonify({
         'items': [sensor.to_dict() for sensor in user.sensors],
@@ -48,7 +48,7 @@ def get_sensors_of_user(user_id):
     })
 
 @bp.route('/users/<int:user_id>/sensors/add', methods=['PATCH'])
-def add_sensors_to_user(user_id):
+def add_user_sensors(user_id):
     data = request.get_json() or {}
     if 'sensors' not in data:
         return bad_request('must include sensors field')
@@ -60,11 +60,11 @@ def add_sensors_to_user(user_id):
     db.session.commit()
     response = jsonify()
     response.status_code = 204
-    response.headers['Location'] = url_for('api.get_sensors_of_user', user_id=user.id)
+    response.headers['Location'] = url_for('api.get_user_sensors', user_id=user.id)
     return response
 
 @bp.route('/users/<int:user_id>/sensors/remove', methods=['PATCH'])
-def remove_sensors_from_user(user_id):
+def remove_user_sensors(user_id):
     data = request.get_json() or {}
     if 'sensors' not in data:
         return bad_request('must include sensors field')
@@ -76,5 +76,5 @@ def remove_sensors_from_user(user_id):
     db.session.commit()
     response = jsonify()
     response.status_code = 204
-    response.headers['Location'] = url_for('api.get_sensors_of_user', user_id=user.id)
+    response.headers['Location'] = url_for('api.get_user_sensors', user_id=user.id)
     return response

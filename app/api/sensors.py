@@ -38,7 +38,7 @@ def get_sensors():
     return jsonify(data)
 
 @bp.route('/sensors/<int:sensor_id>/categories', methods=['GET'])
-def get_categories_of_sensor(sensor_id):
+def get_sensor_categories(sensor_id):
     sensor = Sensor.query.get_or_404(sensor_id)
     return jsonify({
         'items': [category.to_dict() for category in sensor.categories],
@@ -48,7 +48,7 @@ def get_categories_of_sensor(sensor_id):
     })
 
 @bp.route('/sensors/<int:sensor_id>/categories/add', methods=['PATCH'])
-def add_categories_to_sensor(sensor_id):
+def add_sensor_categories(sensor_id):
     data = request.get_json() or {}
     if 'categories' not in data:
         return bad_request('must include categories field')
@@ -60,11 +60,11 @@ def add_categories_to_sensor(sensor_id):
     db.session.commit()
     response = jsonify()
     response.status_code = 204
-    response.headers['Location'] = url_for('api.get_categories_of_sensor', sensor_id=sensor.id)
+    response.headers['Location'] = url_for('api.get_sensor_categories', sensor_id=sensor.id)
     return response
 
 @bp.route('/sensors/<int:sensor_id>/categories/remove', methods=['PATCH'])
-def remove_categories_from_sensor(sensor_id):
+def remove_sensor_categories(sensor_id):
     data = request.get_json() or {}
     if 'categories' not in data:
         return bad_request('must include categories field')
@@ -76,5 +76,5 @@ def remove_categories_from_sensor(sensor_id):
     db.session.commit()
     response = jsonify()
     response.status_code = 204
-    response.headers['Location'] = url_for('api.get_categories_of_sensor', sensor_id=sensor.id)
+    response.headers['Location'] = url_for('api.get_sensor_categories', sensor_id=sensor.id)
     return response

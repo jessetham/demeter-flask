@@ -48,7 +48,7 @@ class UsersAPICase(BaseAPICase):
         res = self.client.get('/api/users')
         self.assertEqual(res.status_code, 200, res.get_json())
 
-    def test_get_sensors_of_user(self):
+    def test_get_user_sensors(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
         utl.add_users_to_db()
@@ -62,7 +62,7 @@ class UsersAPICase(BaseAPICase):
         res = self.client.get('/api/users/{}/sensors'.format(user['id']))
         self.assertEqual(res.status_code, 200, res.get_json())
 
-    def test_add_sensors_to_user(self):
+    def test_add_user_sensors(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
         utl.add_users_to_db()
@@ -85,7 +85,7 @@ class UsersAPICase(BaseAPICase):
         )
         self.assertEqual(res.status_code, 400)
 
-    def test_remove_sensors_from_user(self):
+    def test_remove_user_sensors(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
         utl.add_users_to_db()
