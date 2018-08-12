@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from tests import utl
 from app.models.user import User
 from tests.base import BaseCase
@@ -19,6 +20,17 @@ class UserModelCase(BaseCase):
         # Test removing sensors from a user
         u.remove_sensors(user['sensors'])
         self.assertEqual(len(u.sensors), 0)
+
+    def test_set_and_check_password(self):
+        u = User()
+        password = 'supersecurepassword'
+
+        # Check that the password is correctly set and hashed
+        u.set_password(password)
+        self.assertTrue(check_password_hash(u.password_hash, password))
+
+        # Check that the check_password method returns the expected response
+        self.assertTrue(u.check_password(password))
 
     def test_from_and_to_dict(self):
         utl.add_categories_to_db()

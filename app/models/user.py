@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.models.junctions import user_sensor_junction
 from app.models.mixins import ModelMixin, PaginatedAPIMixin
@@ -28,6 +29,12 @@ class User(db.Model, ModelMixin, PaginatedAPIMixin):
             sensor_o = Sensor.query.filter_by(name=sensor_s).first()
             if sensor_o and sensor_o in self.sensors:
                 self.sensors.remove(sensor_o)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def from_dict(self, data):
         self.name = data['name']
