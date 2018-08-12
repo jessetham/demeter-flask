@@ -41,6 +41,7 @@ class UserModelCase(BaseCase):
         # Test converting from dict to object
         u.from_dict(user)
         self.assertEqual(u.name, user['name'])
+        self.assertTrue(check_password_hash(u.password_hash, user['password']))
         self.assertEqual(
             set([sensor.name for sensor in u.sensors]),
             set(user['sensors']))
@@ -48,6 +49,7 @@ class UserModelCase(BaseCase):
         # Test converting from object to dict
         u_dict = u.to_dict()
         self.assertEqual(u_dict['name'], user['name'])
+        self.assertTrue(check_password_hash(u_dict['password_hash'], user['password']))
         self.assertEqual(
             set([sensor['name'] for sensor in u_dict['sensors']]),
             set(user['sensors'])

@@ -32,11 +32,11 @@ def init():
     ]
     READINGS = []
     USERS = [
-        {'name': 'Jim',     'sensors': ['abacus', 'bushranger', 'demascus']},
-        {'name': 'Pam',     'sensors': ['camrose', 'evergreen', 'bushranger']},
-        {'name': 'Dwight',  'sensors': ['abacus', 'demascus']},
-        {'name': 'Michael', 'sensors': ['abacus', 'camrose']},
-        {'name': 'Creed',   'sensors': ['evergreen', 'demascus']},
+        {'name': 'Jim',     'password': 'super',    'sensors': ['abacus', 'bushranger', 'demascus']},
+        {'name': 'Pam',     'password': 'secure',   'sensors': ['camrose', 'evergreen', 'bushranger']},
+        {'name': 'Dwight',  'password': 'password', 'sensors': ['abacus', 'demascus']},
+        {'name': 'Michael', 'password': 'that',     'sensors': ['abacus', 'camrose']},
+        {'name': 'Creed',   'password': 'secures',  'sensors': ['evergreen', 'demascus']},
     ]
 
 def add_categories_to_db():

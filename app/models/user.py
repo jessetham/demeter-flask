@@ -38,11 +38,13 @@ class User(db.Model, ModelMixin, PaginatedAPIMixin):
 
     def from_dict(self, data):
         self.name = data['name']
+        self.set_password(data['password'])
         self.add_sensors(data['sensors'])
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
+            'password_hash': self.password_hash,
             'sensors': [sensor.to_dict() for sensor in self.sensors]
         }

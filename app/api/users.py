@@ -9,6 +9,8 @@ def create_user():
     data = request.get_json() or {}
     if 'name' not in data:
         return bad_request('must include name field')
+    if 'password' not in data:
+        return bad_request('must include password field')
     if 'sensors' not in data:
         return bad_request('must include sensors field')
     if not Sensor.are_valid_sensors(data['sensors']):
