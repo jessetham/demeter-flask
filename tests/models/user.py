@@ -32,6 +32,27 @@ class UserModelCase(BaseCase):
         # Check that the check_password method returns the expected response
         self.assertTrue(u.check_password(password))
 
+    def test_get_check_and_revoke_token(self):
+        utl.add_categories_to_db()
+        utl.add_sensors_to_db()
+        utl.add_users_to_db()
+        user = User.get_all()[-1]
+
+        # Check that a token gets registered to the user
+        token = user.get_token()
+        self.assertEqual(token, user.token)
+
+        # Check that we recieve the same token when requesting within the timeout
+        self.assertEqual(token, user.get_token())
+
+        # Test that the check_token method works
+        self.assertEqual(User.check_token(token), user)
+
+        # Test that the revoke_token method works
+        user.revoke_token()
+        self.assertEqual(User.check_token(token), None)
+        self.assertNotEqual(user.get_token(), token)
+
     def test_from_and_to_dict(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()

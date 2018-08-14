@@ -1,3 +1,6 @@
+import os
+import base64
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.models.junctions import user_sensor_junction
@@ -37,6 +40,27 @@ class User(db.Model, ModelMixin, PaginatedAPIMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def get_token(self, expires_in=3600):
+        now = datetime.utcnow()
+        if self.token and \
+            self.token_expiration > now + timedelta(seconds=60):
+            return self.token
+        self.token = base64.b64encode(os.urandom(24)).decode('utf-8')
+        self.token_expiration = now + timedelta(seconds=expires_in)
+        db.session.add(self)
+        db.session.commit()
+        return self.token
+
+    def revoke_token(self):
+        self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
+
+    @staticmethod
+    def check_token(token):
+        user = User.query.filter_by(token=token).first()
+        if not user or user.token_expiration < datetime.utcnow():
+            return None
+        return user
 
     def from_dict(self, data):
         self.name = data['name']
