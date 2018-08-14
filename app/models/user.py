@@ -12,6 +12,8 @@ class User(db.Model, ModelMixin, PaginatedAPIMixin):
         'Sensor', secondary=user_sensor_junction, lazy=True,
         backref=db.backref('users', lazy=True))
     password_hash = db.Column(db.String(128))
+    token = db.Column(db.String(32), index=True, unique=True)
+    token_expiration = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
