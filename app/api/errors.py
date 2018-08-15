@@ -9,8 +9,11 @@ def error_response(status_code, message=None):
     response.status_code = status_code
     return response
 
-def bad_request(message):
+def bad_request(message=None):
     return error_response(400, message)
 
-def not_found(message):
+def unauthorized(message=None):
+    return error_response(401, message)
+
+def not_found(message=None):
     return error_response(404, message)
