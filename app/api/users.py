@@ -1,6 +1,7 @@
 from flask import request, jsonify, url_for
 from app import db
 from app.api import bp
+from app.api.auth import token_auth
 from app.api.errors import bad_request
 from app.models import Sensor, User
 
@@ -27,11 +28,13 @@ def create_user():
     return response
 
 @bp.route('/users/<int:user_id>', methods=['GET'])
+@token_auth.login_required
 def get_user(user_id):
     data = User.query.get_or_404(user_id).to_dict()
     return jsonify(data)
 
 @bp.route('/users', methods=['GET'])
+@token_auth.login_required
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 25)
@@ -40,6 +43,7 @@ def get_users():
     return jsonify(data)
 
 @bp.route('/users/<int:user_id>/sensors', methods=['GET'])
+@token_auth.login_required
 def get_user_sensors(user_id):
     user = User.query.get_or_404(user_id)
     return jsonify({
@@ -50,6 +54,7 @@ def get_user_sensors(user_id):
     })
 
 @bp.route('/users/<int:user_id>/sensors/add', methods=['PATCH'])
+@token_auth.login_required
 def add_user_sensors(user_id):
     data = request.get_json() or {}
     if 'sensors' not in data:
@@ -66,6 +71,7 @@ def add_user_sensors(user_id):
     return response
 
 @bp.route('/users/<int:user_id>/sensors/remove', methods=['PATCH'])
+@token_auth.login_required
 def remove_user_sensors(user_id):
     data = request.get_json() or {}
     if 'sensors' not in data:
@@ -82,6 +88,7 @@ def remove_user_sensors(user_id):
     return response
 
 @bp.route('/users/<int:user_id>/password', methods=['PATCH'])
+@token_auth.login_required
 def change_user_password(user_id):
     data = request.get_json() or {}
     if 'old' not in data:

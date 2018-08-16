@@ -1,10 +1,12 @@
 from flask import request, jsonify, url_for
 from app import db
 from app.api import bp
+from app.api.auth import token_auth
 from app.api.errors import bad_request
 from app.models import Category, Sensor
 
 @bp.route('/categories', methods=['POST'])
+@token_auth.login_required
 def create_category():
     data = request.get_json() or {}
     if 'name' not in data:
@@ -23,11 +25,13 @@ def create_category():
     return response
 
 @bp.route('/categories/<int:category_id>', methods=['GET'])
+@token_auth.login_required
 def get_category(category_id):
     data = Category.query.get_or_404(category_id).to_dict()
     return jsonify(data)
 
 @bp.route('/categories', methods=['GET'])
+@token_auth.login_required
 def get_categories():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 25)
