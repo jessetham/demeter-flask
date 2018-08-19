@@ -1,6 +1,6 @@
-# demeter-flask
+# Sensor Vault
 
-Backend component of Demeter. Written in Python 3 and Flask.
+Flask backend to receive, store, and retrieve information from IOT sensors. Written in Python 3 and Flask.
 
 ## Contributing
 
@@ -8,19 +8,19 @@ Backend component of Demeter. Written in Python 3 and Flask.
 Create a virtual environment to store all of the project requirements. Python 3 is tested and recommended.
 ```bash
 # Create a venv
-$ python3 -m venv demeter
-$ source demeter/bin/activate
+$ python3 -m venv sensorvault
+$ source sensorvault/bin/activate
 # Update pip to the latest version
-(demeter)$ pip install --upgrade pip
+(sensorvault)$ pip install --upgrade pip
 
 # Change directories to the project directory
-(demeter)$ cd <path-to-project>/demeter-flask
+(sensorvault)$ cd <path-to-project>/sensorvault
 # Download dependencies for PyPI using pip
-(demeter)$ pip install -r requirements.txt
+(sensorvault)$ pip install -r requirements.txt
 ```
 
 ### Run unit tests
 ```bash
 # In root directory of the project
-(demeter)$ python -m unittest tests
+(sensorvault)$ python -m unittest tests
 ```
