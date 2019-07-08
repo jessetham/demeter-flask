@@ -25,4 +25,4 @@ def create_app(config_class):
     return app
 
 
-from app import models
+from app import models  # noqa

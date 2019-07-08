@@ -85,7 +85,6 @@ class SensorsAPICase(BaseAPICase):
     def test_remove_sensor_categories(self):
         utl.add_categories_to_db()
         utl.add_sensors_to_db()
-        valid_categories = [category["name"] for category in utl.CATEGORIES]
 
         sensor = utl.SENSORS[-1]
         # Test removing available categories from sensors
