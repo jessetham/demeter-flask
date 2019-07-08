@@ -1,5 +1,6 @@
 from tests.base import BaseCase
 
+
 class BaseAPICase(BaseCase):
     def setUp(self):
         super().setUp()

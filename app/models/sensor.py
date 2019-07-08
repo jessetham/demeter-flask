@@ -3,18 +3,22 @@ from app.models.category import Category
 from app.models.junctions import sensor_category_junction
 from app.models.mixins import ModelMixin, PaginatedAPIMixin
 
+
 class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
-    __tablename__ = 'sensor'
+    __tablename__ = "sensor"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     last_updated = db.Column(db.DateTime, index=True)
-    readings = db.relationship('Reading', backref='sensor', lazy='dynamic')
+    readings = db.relationship("Reading", backref="sensor", lazy="dynamic")
     categories = db.relationship(
-        'Category', secondary=sensor_category_junction, lazy='subquery',
-        backref=db.backref('sensors', lazy=True))
+        "Category",
+        secondary=sensor_category_junction,
+        lazy="subquery",
+        backref=db.backref("sensors", lazy=True),
+    )
 
     def __repr__(self):
-        return '<Sensor {}>'.format(self.name)
+        return "<Sensor {}>".format(self.name)
 
     @staticmethod
     def are_valid_sensors(sensors):
@@ -41,13 +45,13 @@ class Sensor(db.Model, ModelMixin, PaginatedAPIMixin):
                 self.categories.remove(category_o)
 
     def from_dict(self, data):
-        self.name = data['name']
-        self.add_categories(data['categories'])
+        self.name = data["name"]
+        self.add_categories(data["categories"])
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'lastUpdated': self.last_updated,
-            'categories': [category.to_dict() for category in self.categories]
+            "id": self.id,
+            "name": self.name,
+            "lastUpdated": self.last_updated,
+            "categories": [category.to_dict() for category in self.categories],
         }

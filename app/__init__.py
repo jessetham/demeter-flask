@@ -7,6 +7,7 @@ db = SQLAlchemy()
 # Flask Migrate
 migrate = Migrate()
 
+
 def create_app(config_class):
     # Flask application
     app = Flask(__name__)
@@ -18,8 +19,10 @@ def create_app(config_class):
 
     # Import API blueprints and bind to app
     from app.api import bp as api_bp
-    app.register_blueprint(api_bp, url_prefix='/api')
+
+    app.register_blueprint(api_bp, url_prefix="/api")
 
     return app
+
 
 from app import models
